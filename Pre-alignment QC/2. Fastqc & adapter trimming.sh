@@ -2,10 +2,11 @@
 
 ## fastqc ##
 
-#!/bin/bash
+
 # fastqc.sh is a script that runs fastqc analysis on a list of samples within a folder
 # Remember to customize PBS -N and PBS -J 0-N 
 
+#!/bin/bash
 #PBS -l select=1:mem=15gb:ncpus=1
 #PBS -l walltime=02:00:00
 #PBS -N fastqc_<batch>
@@ -34,10 +35,11 @@ mv * $DIR/fastqc
 
 ## multiqc ##
 
-#!/bin/bash
+
 # multiqc.sh is a script that combines FastQC analysis on a list of samples within a folder
 # Remember to customize PBS -N and PBS -J 0-N 
 
+#!/bin/bash
 #PBS -l select=1:mem=15gb:ncpus=1
 #PBS -l walltime=02:00:00
 #PBS -N multiqc_<batch>
@@ -58,9 +60,9 @@ mv * $DIR/multiqc
 
 ## adapter trimming ##
 
-#!/bin/bash
 # fastp.sh uses the fastp program to cut adapters from sequencing data
 
+#!/bin/bash
 #PBS -l select=1:mem=30gb:ncpus=6
 #PBS -l walltime=02:00:00
 #PBS -N fastp_<batch>
@@ -118,10 +120,11 @@ mv * $DIR/multiqc
 
 ## fastqc of trimmed reads ##
 
-#!/bin/bash
+
 # fastqc_trimmed.sh is a script that runs fastqc analysis on a list of samples within a folder
 # Remember to customize PBS -N and PBS -J 0-N 
 
+#!/bin/bash
 #PBS -l select=1:mem=15gb:ncpus=1
 #PBS -l walltime=02:00:00
 #PBS -N fastqc_trimmed_<batch>
