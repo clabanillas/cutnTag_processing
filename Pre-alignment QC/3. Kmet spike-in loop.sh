@@ -2,7 +2,6 @@
 
 ## kmet loop for barcode counts ##
 
-
 # kmetloop.sh is a script that counts barcodes corresponding to the Epycypher k-methyl modification panel spike-in from fastq files within a folder
 # Remember to customize PBS -N and PBS -J 0-N 
 
@@ -53,9 +52,7 @@ paste "$samplename"_R1.txt "$samplename"_R2.txt | column -s '' -t > "$samplename
 mv *_bc_counts.txt $OUTDIR
 
 
-## TERMINAL COMMANDS ##
-
-
+## TERMINAL ##
 # Collate all barcode counts into a single .txt file
 cd /path/to/ephemeral/CT_<batch>/kmet
 LABEL=kmet_barcode_counts_CT_<batch>_
