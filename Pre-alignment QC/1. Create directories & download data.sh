@@ -1,4 +1,5 @@
-```
+```bash
+
 # Note: Fastq file names were changed to the EPIMEM convention CT_<batch>_<day>_<histone>_<rep>
 
 # Define base directories with placeholders
