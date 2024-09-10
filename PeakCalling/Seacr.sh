@@ -1,11 +1,11 @@
 ## Unnormalized Peak Calling with SEACR ##
 
-# First, move IgG control files to a separate folder
+# First move IgG control samples to a separate folder
 DIR=/path/to/ephemeral/CT_<batch>
 
 mv $DIR/alignment/bedgraph/CT_0*_IgG*_rmDup_bowtie2.fragments.bedgraph $DIR/alignment/bedgraph/histControl
 
-# Seacr.sh is a script to run SEACR
+# _seacr.sh is a script to run SEACR
 # Run by batch to match to the correct IgG control
 
 #!/bin/bash
@@ -38,8 +38,21 @@ cp $histControl .
 # Set location of SEACR program
 seacr="/path/to/seacr/SEACR_1.3.sh"
 
-# Run SEACR with built-in normalization (stringent mode)
+#run seacr with built-in normalisation
 bash $seacr $DIR/alignment/bedgraph/"$sampleID"_rmDup_bowtie2.fragments.bedgraph $histControl norm stringent $DIR/peakCalling/"$sampleID"_rmDup_seacr_control.peaks
 
-# Run SEACR with built-in normalization for top 10% peaks (stringent mode)
-bash $seacr $DIR/alignment/bedgraph/"$sampleID"_rmDup_bowtie2.fragments.bedgraph 0.01 norm stringent $DIR/peakCalling/"$sampleID"_rmDup_se
+#run seacr with built-in normalisation for top 10% peaks
+bash $seacr $DIR/alignment/bedgraph/"$sampleID"_rmDup_bowtie2.fragments.bedgraph 0.01 norm stringent $DIR/peakCalling/"$sampleID"_rmDup_seacr_top0.01.peaks
+
+#run seacr without normalisation with IgG control
+bash $seacr $DIR/alignment/bedgraph/"$sampleID"_rmDup_bowtie2.fragments.bedgraph $histControl non stringent $DIR/peakCalling/"$sampleID"_rmDup_seacr_non_control.peaks
+
+#run seacr without normalisation with IgG control in relaxed mode
+bash $seacr $DIR/alignment/bedgraph/"$sampleID"_rmDup_bowtie2.fragments.bedgraph $histControl non relaxed $DIR/peakCalling/"$sampleID"_rmDup_seacr_non_relaxed.peaks
+
+#run seacr without normalisation without IgG control in stringent mode
+bash $seacr $DIR/alignment/bedgraph/"$sampleID"_rmDup_bowtie2.fragments.bedgraph 0.01 non stringent $DIR/peakCalling/"$sampleID"_rmDup_seacr_non_top0.01.peaks
+
+#run seacr without normalisation without IgG control in relaxed mode
+bash $seacr $DIR/alignment/bedgraph/"$sampleID"_rmDup_bowtie2.fragments.bedgraph 0.01 non relaxed $DIR/peakCalling/"$sampleID"_rmDup_seacr_non_relaxed_top0.01.peaks
+
