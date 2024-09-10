@@ -1,4 +1,4 @@
-# Note: Refer to script 4.1 for previous steps 0-3
+# Note: Refer to script 5.1 for previous steps 0-2
 
 ## 3. Assessing fragment length size distribution 
 
