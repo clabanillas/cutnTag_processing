@@ -1,8 +1,8 @@
-#!/bin/bash
 ## File format conversion from rmDup files ##
 
 # fileFormatConversion.sh is a script adapted from 131022_rmDup_bam.sh and 080922_bam_bed_samtools.sh to run file conversion
 
+#!/bin/bash
 #PBS -l select=1:mem=100gb:ncpus=8 
 #PBS -l walltime=48:00:00
 #PBS -N CT_<batch>_fileFormatConversion
