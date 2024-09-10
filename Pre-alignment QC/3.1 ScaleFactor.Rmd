@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{Load libraries}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(dplyr)
 library(stringr)
@@ -20,7 +20,7 @@ library(corrplot)  # For correlation plot
 
 ## Sample and Histone List Setup
 
-```{r setup, include=FALSE}
+```{Sample list set up}
 projPath <- "/path/to/ephemeral/CT_<batch>"
 sampleList <- c(
   "CT_023_MSH6KO_IgG_A", "CT_023_MSH6KO_IgG_B", "CT_023_MSH6KO_k27me3_A",  "CT_023_MSH6KO_k27me3_B", 
@@ -33,7 +33,7 @@ histList <- c("IgG", "k36me3A", "k36me3E", "k27me3")
 
 ## Collecting Alignment Results from Bowtie2 Summary Files
 
-```{r setup, include=FALSE}
+```{Collect alignment results in dataframe}
 alignResult <- data.frame()
 for(hist in sampleList) {
   alignRes <- read.table(
@@ -61,7 +61,7 @@ alignResult
 
 ## Summarizing Duplication Information from Picard Summary Outputs
 
-```{r setup, include=FALSE}
+```{Collect duplication results an djoin with alignment results}
 dupResult <- data.frame()
 for(hist in sampleList) {
   dupRes <- read.table(
@@ -87,7 +87,7 @@ alignDupSummary
 
 ## Processing Spike-in counts 
 
-```{r setup, include=FALSE}
+```{Process barcode counts and calculate scale factor}
 # Read barcode counts
 barcodes_txt <- read.delim("/path/to/ephemeral/CT_<batch>/kmet/kmet_barcode_counts_CT_<batch>.txt")
 spike_in_reads <- read.csv("/path/to/ephemeral/CT_<batch>/kmet/kmet_barcode_counts_CT_<batch>.txt", sep = "\t")
