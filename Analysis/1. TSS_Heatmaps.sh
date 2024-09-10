@@ -21,7 +21,7 @@ source activate cutnTag2
 
 # Set directories
 DIR=/path/to/ephemeral/CT_<batch>
-OUTDIR=/path/to/ephemeral/CT_<batch>/heatmap
+OUTDIR=/path/to/ephemeral/CT_<batch>/heatmaps
 
 # List your input files
 files=$(ls $DIR/alignment/bam/*_bowtie2.rmDup.mapped.bam)
