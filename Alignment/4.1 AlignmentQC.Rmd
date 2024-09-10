@@ -1,0 +1,103 @@
+---
+title: "Alignment_QC_CT_<batch>"
+author: "your name"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{Load libraries}
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(viridis)
+library(GenomicRanges)
+library(chromVAR) ## For FRiP analysis and differential analysis
+library(DESeq2) ## For differential analysis section
+library(ggpubr) ## For customizing figures
+library(corrplot) ## For correlation plot
+```
+
+
+```{Set up sample list}
+## Path to the project and histone list
+projPath = "/path/to/ephemeral/CT_<batch>"
+sampleList=c("CT_023_MSH6KO_IgG_A", "CT_023_MSH6KO_IgG_B", "CT_023_MSH6KO_k27me3_A",  "CT_023_MSH6KO_k27me3_B", "CT_023_MSH6KO_k36me3A_A", "CT_023_MSH6KO_k36me3A_B", "CT_023_MSH6KO_k36me3E_A", "CT_023_MSH6KO_k36me3E_B", "CT_023_WT_IgG_A", "CT_023_WT_IgG_B", "CT_023_WT_k27me3_A", "CT_023_WT_k27me3_B", "CT_023_WT_k36me3A_A", "CT_023_WT_k36me3A_B", "CT_023_WT_k36me3E_A", "CT_023_WT_k36me3E_B")
+histList = c("IgG", "k36me3A", "k36me3E", "k27me3")
+#assign a filename to the batch name
+filename = "CT_023"
+```
+
+
+## Collecting Alignment Results from Bowtie2 Summary Files
+
+```{Collect alignment results in dataframe}
+alignResult <- data.frame()
+for(hist in sampleList) {
+  alignRes <- read.table(
+    paste0(projPath, "/alignment/sam/bowtie2_summary/", hist, "_bowtie2.txt"), 
+    header = FALSE, fill = TRUE
+  )
+  
+  alignRate <- substr(alignRes$V1[6], 1, nchar(as.character(alignRes$V1[6]))-1)
+  histInfo <- strsplit(hist, "_")[[1]]
+  
+  alignResult <- data.frame(
+    Sample = paste(histInfo[1], histInfo[2], histInfo[3], histInfo[4], histInfo[5], sep = "_"), 
+    Condition = histInfo[3], 
+    Histone = histInfo[4], 
+    Replicate = histInfo[5], 
+    SequencingDepth = as.numeric(alignRes$V1[1]), 
+    MappedFragNum_T2T = as.numeric(alignRes$V1[4]) + as.numeric(alignRes$V1[5]), 
+    AlignmentRate_T2T = as.numeric(alignRate)
+  ) %>% rbind(alignResult, .)
+}
+alignResult$Histone <- factor(alignResult$Histone, levels = histList)
+alignResult <- alignResult %>% mutate(AlignmentRate_T2T = paste0(AlignmentRate_T2T, "%"))
+alignResult
+```
+
+```{Generate plots}
+#Sequencing depth plot
+fig3A = alignResult %>% ggplot(aes(x = Histone, y = SequencingDepth/1000000, fill = Histone)) +
+  geom_boxplot() +
+  geom_jitter(aes(color = Condition), position = position_jitter(0.15)) +
+  scale_fill_viridis(discrete = TRUE, begin = 0.1, end = 0.9, option = "magma", alpha = 0.8) +
+  scale_color_viridis(discrete = TRUE, begin = 0.1, end = 0.9) +
+  theme_bw(base_size = 18) +
+  ylab("Sequencing Depth per Million") +
+  xlab("") + 
+  ggtitle("A. Sequencing Depth")
+
+#Mapped fragments per million
+fig3B = alignResult %>% ggplot(aes(x = Histone, y = MappedFragNum_T2T/1000000, fill = Histone)) +
+  geom_boxplot() +
+  geom_jitter(aes(color = Condition), position = position_jitter(0.15)) +
+  scale_fill_viridis(discrete = TRUE, begin = 0.1, end = 0.9, option = "magma", alpha = 0.8) +
+  scale_color_viridis(discrete = TRUE, begin = 0.1, end = 0.9) +
+  theme_bw(base_size = 18) +
+  ylab("Mapped Fragments per Million") +
+  xlab("") +
+  ggtitle("B. Alignable Fragment (T2T)")
+
+#Alignment rate
+fig3C = alignResult %>% ggplot(aes(x = Histone, y = AlignmentRate_T2T, fill = Histone)) +
+  geom_boxplot() +
+  geom_jitter(aes(color = Condition), position = position_jitter(0.15)) +
+  scale_fill_viridis(discrete = TRUE, begin = 0.1, end = 0.9, option = "magma", alpha = 0.8) +
+  scale_color_viridis(discrete = TRUE, begin = 0.1, end = 0.9) +
+  theme_bw(base_size = 18) +
+  ylab("% of Mapped Fragments") +
+  xlab("") +
+  ggtitle("C. Alignment Rate (T2T)")
+
+#Combine plots into a single pdf
+ggarrange(fig3A, fig3B, fig3C, ncol = 3, nrow=1, common.legend = TRUE, legend="bottom")
+ggsave(paste0("/rds/general/user/css119/home/", filename, "_alignment_stats.pdf"), height = 10, width = 20)
+```
+
+
+
+
+
+
+

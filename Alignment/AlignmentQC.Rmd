@@ -1,6 +1,0 @@
----
-title: "Alignment_QC_CT_<batch>"
-author: "your name"
-date: "`r Sys.Date()`"
-output: html_document
----
