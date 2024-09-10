@@ -1,9 +1,11 @@
 ---
-title: "Alignment_QC_CT_<batch>"
+title: "Post_Alignment_QC_CT_<batch>"
 author: "your name"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+
+## 0. Load libraries and R working environment 
 
 ```{Load libraries}
 library(dplyr)
@@ -27,6 +29,7 @@ histList = c("IgG", "k36me3A", "k36me3E", "k27me3")
 filename = "CT_023"
 ```
 
+## 1. Assessment of Alignment quality 
 
 ## Collecting Alignment Results from Bowtie2 Summary Files
 
@@ -102,6 +105,7 @@ ggarrange(fig3A, fig3B, fig3C, ncol = 3, nrow=1, common.legend = TRUE, legend="b
 ggsave(paste0("/path/to/home/", filename, "_alignment_stats.pdf"), height = 10, width = 20)
 ```
 
+## 2. Assessment of Duplication Rate 
 
 ## Summarizing Duplication Information from Picard Summary Outputs
 
