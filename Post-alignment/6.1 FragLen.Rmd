@@ -1,7 +1,8 @@
+# Note: Refer to script 4.1 for previous steps #0-3
+
 ## 3. Assessing fragment length size distribution 
 
-```{r}
-## Collect the fragment size information
+```{Collect the fragment size information}
 fragLen = c()
 for(hist in sampleList){
   
