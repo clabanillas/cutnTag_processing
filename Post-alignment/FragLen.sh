@@ -1,4 +1,3 @@
-#!/bin/bash
 ## Assess mapped fragment size distribution ##
 
 # FragLen.sh is a script that runs samtools on a list of .sam samples to assess mapped fragment size distribution
