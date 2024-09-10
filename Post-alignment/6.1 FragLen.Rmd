@@ -1,0 +1,13 @@
+## 3. Assessing fragment length size distribution 
+
+```{r}
+## Collect the fragment size information
+fragLen = c()
+for(hist in sampleList){
+  
+  histInfo = strsplit(hist, "_")[[1]]
+  fragLen = read.table(paste0(projPath, "/alignment/sam/fragmentLen/", hist, "_fragmentLen.txt"), header = FALSE) %>% mutate(fragLen = V1 %>% as.numeric, fragCount = V2 %>% as.numeric, Weight = as.numeric(V2)/sum(as.numeric(V2)), Histone = histInfo[4], Replicate = histInfo[5], sampleInfo = hist) %>% rbind(fragLen, .) 
+}
+fragLen$sampleInfo = factor(fragLen$sampleInfo, levels = sampleList)
+fragLen$Histone = factor(fragLen$Histone, levels = histList)
+```
