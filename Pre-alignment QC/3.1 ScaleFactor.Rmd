@@ -85,7 +85,7 @@ alignDupSummary <- left_join(alignResult, dupResult, by = c("Sample", "Condition
 alignDupSummary
 ```
 
-## Processing Spike-in Information
+## Processing Spike-in counts 
 
 ```{r setup, include=FALSE}
 # Read barcode counts
@@ -101,8 +101,13 @@ ID_files <- sapply(split_names, function(x) paste(x[-length(x)], collapse = "_")
 ID_files <- ID_files[c(T, F)]
 rownames(spike_in_reads_pair) <- ID_files
 
-# Match with alignDupSummary
-alignDupSummary <- alignDupSummary %>% arrange(Sample)
+# IMPORTANT: Match with alignDupSummary rows
+# Set row names for alignDupsummary based on a column
+row.names(alignDupSummary) <- alignDupSummary$Sample
+#row.names(spike_in_reads_pair) already set and are the same
+# Order one dataframe by the row names of the other (alignDupSummary)
+spike_in_reads_pair <- spike_in_reads_pair[match(row.names(alignDupSummary), row.names(spike_in_reads_pair)), ]
+
 
 # Generate spike-in dataframe
 spike_in_reads_pair <- as.data.frame(spike_in_reads_pair)
