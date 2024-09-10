@@ -1,7 +1,7 @@
+# This series of scripts can be used to build a Transcription Start Site heatmap of samples .bam files over a genome .gtf
 
 
-
-## 1.Generate raw bigwig
+## 1.Generate raw bigwig 
 
 
 # bam_to_bigwig is a script to convert .bam files to .bw (BigWig) 
