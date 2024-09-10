@@ -10,7 +10,7 @@
 #PBS -l select=1:mem=64gb:ncpus=10
 #PBS -l walltime=48:00:00
 #PBS -N bam_to_bigwig_CT_<batch>
-#PBS -J 0-15
+#PBS -J 0-11
 
 tid=$PBS_ARRAY_INDEX
 
