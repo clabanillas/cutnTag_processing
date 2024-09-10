@@ -1,4 +1,4 @@
-# CutnTag Data Processing
+# CUT&Tag Data Processing
 
 This repository records the processing pipeline of CUT&Tag sequencing data. All steps using Bash and R (v.4.3.1).
 
